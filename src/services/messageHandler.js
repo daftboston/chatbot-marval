@@ -8,9 +8,26 @@ class MessageHandler {
   constructor() {
     this.appointmentState = {};
     this.assistantState = {};
+    this.stateTimeout = 10 * 60 * 1000;
   }
 
+  clearStaleStates() {
+  const now = Date.now();
+  Object.keys(this.appointmentState).forEach((key) => {
+    if (this.appointmentState[key].timestamp < now - this.stateTimeout) {
+      delete this.appointmentState[key];
+    }
+  });
+  Object.keys(this.assistantState).forEach((key) => {
+    if (this.assistantState[key].timestamp < now - this.stateTimeout) {
+      delete this.assistantState[key];
+    }
+  });
+}
+
+  
   async handleIncomingMessage(message, senderInfo) {
+     this.clearStaleStates();
      if (message?.type === 'text') {
       const incomingMessage = message.text.body.toLowerCase().trim();
       
@@ -55,7 +72,7 @@ class MessageHandler {
 async sendWelcomeMessage(to, messageId, senderInfo) {
     const name = this.getSenderName(senderInfo);
     const onlyName = name.split(' ')[0]
-    const welcomeMessage = `Bienvenido ${onlyName}, Soy marbot ¿En qué puedo ayudarte hoy?`;
+    const welcomeMessage = `Bienvenido ${onlyName}, Soy Marbot ¿En qué puedo ayudarte hoy?`;
     await whatsappService.sendMessage(to, welcomeMessage, messageId);
   }
 
@@ -95,23 +112,23 @@ async handleMenuOption(to, option){
     let response
     switch(option){
         case 'option_1':
-            this.appointmentState[to] = {step:'name'}
+            this.appointmentState[to] = {step:'name', timestamp: Date.now()}
             response= 'Por Favor, ingresa tu nombre:'
             break
         case 'option_2':  
-            this.assistandState[to]= {step:'question'}
+            this.assistantState[to]= {step:'question', timestamp: Date.now()}
             response = 'Hola, soy Marbot, en que te puedo ayudar?'
             break
         case 'option_3':            
-            response = 'Te esperamos en nuestra sucursal'
+            response = 'Te esperamos en nuestra sucursal!'
             await this.sendLocation(to)
             break
         case 'option_4':           
-            response = 'que bien, me alegro mucho, hay algo mas en que te pueda ayudar?'
+            response = '¡que bien, me alegro mucho! , hay algo mas en que te pueda ayudar?'
             break
         case 'option_5':
-             this.assistandState[to]= {step:'question'}
-            response = 'Por supuesto! dime que mas quieres consultar?'
+             this.assistantState[to]= {step:'question', timestamp: Date.now()}
+            response = '¡Por supuesto! dime que mas quieres consultar?'
             break
         case 'option_6':
             response = 'Te invitamos a hablar con un asesor de la sucursal'
@@ -198,22 +215,26 @@ async handleAppointmentFlow(to, message) {
       case 'name':
         state.name = message;
         state.step = 'city';
-        response = "Gracias, Ahora, ¿Cuál es tu ciudad?"
+        response = "Gracias. Ahora, ¿Cuál es tu ciudad?"
         break;
       case 'city':
         state.city = message;
         state.step = 'project';
-        response = 'Que proyecto estas interesado?'
+        response = '¿Que proyecto estas interesado?'
         break;
       case 'project':
         state.project = message;
         state.step = 'email';
-        response = 'Por favor ingresa tu correo'; 
+        response = 'Por favor,  ingresa tu correo'; 
         break;
       case 'email':
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+       if (emailRegex.test(message)) {
         state.email = message;
         response = this.completeAppointment(to);
-        break;
+      } else {
+        response = 'Por favor, ingresa un correo electrónico válido (ejemplo: usuario@dominio.com).';
+      }
     }
     await whatsappService.sendMessage(to, response);
   }
@@ -232,9 +253,15 @@ async handleAssitantFlow(to, message) {
 
  ]
 
-  if(state.step === 'question') {
-    response = await getGrokResponse(message)
+if (state.step === 'question') {
+    try {
+      response = await getGrokResponse(message);
+    } catch (error) {
+      console.error('Error in getGrokResponse:', error);
+      response = 'Lo siento, hubo un error al procesar tu pregunta. Por favor, intenta de nuevo.';
+    }
   }
+
   
   delete this.assistandState[to]
   await whatsappService.sendMessage(to, response)
