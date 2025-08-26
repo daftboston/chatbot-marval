@@ -202,7 +202,7 @@ async handleAppointmentFlow(to, message) {
         break;
       case 'city':
         state.city = message;
-        state.step = 'email';
+        state.step = 'project';
         response = 'Que proyecto estas interesado?'
         break;
       case 'project':
