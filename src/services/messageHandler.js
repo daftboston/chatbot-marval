@@ -197,21 +197,21 @@ async handleAppointmentFlow(to, message) {
     switch (state.step) {
       case 'name':
         state.name = message;
-        state.step = 'petName';
+        state.step = 'city';
         response = "Gracias, Ahora, ¿Cuál es tu ciudad?"
         break;
-      case 'petName':
-        state.petName = message;
-        state.step = 'petType';
+      case 'city':
+        state.city = message;
+        state.step = 'email';
         response = 'Que proyecto estas interesado?'
         break;
-      case 'petType':
-        state.petType = message;
-        state.step = 'reason';
+      case 'project':
+        state.project = message;
+        state.step = 'email';
         response = 'Por favor ingresa tu correo'; 
         break;
-      case 'reason':
-        state.reason = message;
+      case 'email':
+        state.email = message;
         response = this.completeAppointment(to);
         break;
     }
