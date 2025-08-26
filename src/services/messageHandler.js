@@ -194,16 +194,22 @@ completeAppointment(to){
    ]
    
    //console.log(userData);
-   appendToSheet(userData)
 
-   return `Gracias por agendar tu cita. 
-   Resumen de tu cita:
-   Nombre: ${appointment.name}
-   Ciudad: ${appointment.city}
-   Proyecto: ${appointment.project}
-   Email: ${appointment.email}
+  try {
+    appendToSheet(userData);
+    return `Gracias por agendar tu cita. 
+    Resumen de tu cita:
+    Nombre: ${appointment.name}
+    Ciudad: ${appointment.city}
+    Proyecto: ${appointment.project}
+    Correo electrónico: ${appointment.email}
+    
+    Nos pondremos en contacto contigo pronto.`;
+  } catch (error) {
+    console.error('Error saving appointment:', error);
+    return 'Lo siento, hubo un error al guardar tu cita. Por favor, intenta de nuevo.';
+  }
    
-   Nos pondremos en contacto contigo pronto. `
    
 }
 
