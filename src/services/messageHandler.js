@@ -170,9 +170,9 @@ completeAppointment(to){
    const userData = [
     to,
     appointment.name,
-    appointment.petName,
-    appointment.petType,
-    appointment.reason,
+    appointment.city,
+    appointment.project,
+    appointment.email,
     new Date().toISOString()
    ]
    
@@ -182,9 +182,9 @@ completeAppointment(to){
    return `Gracias por agendar tu cita. 
    Resumen de tu cita:
    Nombre: ${appointment.name}
-   Ciudad: ${appointment.petName}
-   Proyecto: ${appointment.petType}
-   razon: ${appointment.reason}
+   Ciudad: ${appointment.city}
+   Proyecto: ${appointment.project}
+   Email: ${appointment.email}
    
    Nos pondremos en contacto contigo pronto. `
    
