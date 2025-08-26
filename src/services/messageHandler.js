@@ -203,12 +203,12 @@ async handleAppointmentFlow(to, message) {
       case 'petName':
         state.petName = message;
         state.step = 'petType';
-        response = '¿Qué tipo de proyecto estas interesado, VIS  o  no Vis)'
+        response = 'Que proyecto estas interesado?'
         break;
       case 'petType':
         state.petType = message;
         state.step = 'reason';
-        response = '¿Cuál es el motivo de la Consulta?'; 
+        response = 'Por favor ingresa tu correo'; 
         break;
       case 'reason':
         state.reason = message;
