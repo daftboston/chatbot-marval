@@ -7,7 +7,7 @@ class MessageHandler {
 
   constructor() {
     this.appointmentState = {};
-    this.assistandState = {};
+    this.assistantState = {};
   }
 
   async handleIncomingMessage(message, senderInfo) {
@@ -22,8 +22,8 @@ class MessageHandler {
                await this.sendMedia (message.from, incomingMessage)
           } else if (this.appointmentState[message.from]) {
              await this.handleAppointmentFlow(message.from, incomingMessage);
-          }  else if (this.assistandState[message.from]) {
-             await this.handleAssitandFlow(message.from, incomingMessage);
+          }  else if (this.assistantState[message.from]) {
+             await this.handleAssitantFlow(message.from, incomingMessage);
           }          
             else           
             {
@@ -218,8 +218,8 @@ async handleAppointmentFlow(to, message) {
     await whatsappService.sendMessage(to, response);
   }
 
-async handleAssitandFlow(to, message) {
-  const state = this.assistandState[to]
+async handleAssitantFlow(to, message) {
+  const state = this.assistantState[to]
   let response
 
 
