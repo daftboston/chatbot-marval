@@ -27,7 +27,7 @@ class MessageHandler {
           }          
             else           
             {
-             const response =message.text.body
+             const response = 'Lo siento no entendi tu mensaje'
              await whatsappService.sendMessage(message.from, response,  message.id)
             }     
   
