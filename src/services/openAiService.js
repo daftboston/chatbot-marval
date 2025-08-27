@@ -13,10 +13,10 @@ const grok = new OpenAI({
 let companyData;
 try {
   companyData = JSON.parse(
-    await fs.readFile(path.join(process.cwd(), 'data', 'companyData.json'), 'utf8')
+    await fs.readFile(path.join(process.cwd(), 'data', 'projects.json'), 'utf8')
   );
 } catch (error) {
-  console.error('Error loading companyData.json:', error);
+  console.error('Error loading projects.json:', error);
   companyData = { companyName: 'Marval Construction', projects: [], faqs: [], contact: {} };
 }
 
@@ -28,10 +28,10 @@ const conversationHistory = [
       Eres Marbot, un asistente de inteligencia artificial creado por Marval, una constructora colombiana. 
       Tu propósito es responder preguntas sobre proyectos arquitectónicos con un tono cordial y profesional.
       Usa la siguiente información de la empresa para responder:
-      Nombre: ${companyData.companyName}
-      Proyectos: ${JSON.stringify(companyData.projects, null, 2)}
-      Preguntas frecuentes: ${JSON.stringify(companyData.faqs, null, 2)}
-      Contacto: ${JSON.stringify(companyData.contact, null, 2)}
+      Nombre: ${projects.companyName}
+      Proyectos: ${JSON.stringify(projects.projects, null, 2)}
+      Preguntas frecuentes: ${JSON.stringify(projects.faqs, null, 2)}
+      Contacto: ${JSON.stringify(projects.contact, null, 2)}
     `,
   },
 ];
