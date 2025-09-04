@@ -10,5 +10,9 @@ export default {
   PORT: process.env.PORT || 3005,
   BASE_URL: process.env.BASE_URL,
   XAI_API_KEY: process.env.XAI_API_KEY,
+  SPREADSHEET_ID: process.env.SPREADSHEET_ID,
+  GOOGLE_PRIVATE_KEY: process.env.GOOGLE_PRIVATE_KEY,
+  GOOGLE_CLIENT_EMAIL: process.env.GOOGLE_CLIENT_EMAIL,
+  
   
 };
