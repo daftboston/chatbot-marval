@@ -1,62 +1,82 @@
-import OpenAI  from "openai"
-import config from '../config/env.js'
+
+
+import OpenAI from "openai";
+import fs from 'fs/promises';
+import path from 'path';
 
 const grok = new OpenAI({
   apiKey: config.XAI_API_KEY,
-  baseURL: 'https://api.x.ai/v1',  // This points to xAI's endpoint instead of OpenAI
+  baseURL: 'https://api.x.ai/v1', // Points to xAI's endpoint
 });
 
+// Load company data once at startup
+let companyData;
+try {
+  companyData = JSON.parse(
+    await fs.readFile(path.join(process.cwd(), 'src', 'projects.json'), 'utf8')
+  );
+} catch (error) {
+  console.error('Error loading projects.json:', error);
+  companyData = { companyName: 'Marval Construction', projects: [], faqs: [], contact: {} };
+}
 
-// In-memory conversation history (can be replaced with a database for persistence)
-let conversationHistory = [
+// Initialize conversation history with system prompt including company data
+const conversationHistory = [
   {
     role: 'system',
-    content: 'Eres Marbot, un asistente de inteligencia artificial creado por Marval, una constructora colombiana. Tu propósito es responder preguntas sobre proyectos arquitectónicos con un tono cordial y profesional.',
+    content: `
+      Eres Marbot, un asistente de inteligencia artificial creado por Marval, una constructora colombiana. 
+      Tu propósito es responder preguntas sobre proyectos arquitectónicos con un tono cordial y profesional.
+      Usa la siguiente información de la empresa para responder:
+      Nombre: ${projects.companyName}
+      Proyectos: ${JSON.stringify(projects.projects, null, 2)}
+      Preguntas frecuentes: ${JSON.stringify(projects.faqs, null, 2)}
+      Contacto: ${JSON.stringify(projects.contact, null, 2)}
+    `,
   },
 ];
 
 async function getGrokResponse(message) {
   try {
-    
+    // Add user message to conversation history
     conversationHistory.push({
-      role:'user',
-      content: 'message'
-    })
-
-
-    const completion = await grok.chat.completions.create({
-      model: 'grok-4',  // Or other models like 'grok-1.5' if available
-      messages: conversationHistory,
-      temperature: 0.5,  // Controls creativity (0-1; lower for more factual responses)
-      max_tokens: 300,   // Limit response length to save credits
+      role: 'user',
+      content: message, // Fixed: Use the message parameter
     });
 
+    const completion = await grok.chat.completions.create({
+      model: 'grok-4', // Or other models like 'grok-1.5' if available
+      messages: conversationHistory,
+      temperature: 0.5, // Controls creativity
+      max_tokens: 300, // Limit response length
+    });
 
     // Extract the assistant's response
-    const assistantResponse = completion.choices[0].message.content
+    const assistantResponse = completion.choices[0].message.content;
 
-
-// Add the assistant's response to the conversation history
+    // Add assistant's response to conversation history
     conversationHistory.push({
       role: 'assistant',
       content: assistantResponse,
     });
-     
-// Optional: Limit conversation history to prevent excessive token usage
-    if (conversationHistory.length > 5) { // Adjust the limit as needed
-      conversationHistory = [
-        conversationHistory[0], // Keep the system prompt
-        ...conversationHistory.slice(-5), // Keep the last 9 messages
-      ];
+
+    // Limit conversation history to prevent excessive token usage
+    if (conversationHistory.length > 5) {
+      conversationHistory.splice(
+        1, // Keep the system prompt
+        conversationHistory.length - 5 // Keep last 4 messages
+      );
     }
 
     return assistantResponse;
-
-   
   } catch (error) {
-    console.error('Error calling Grok API:', error);
-    return 'Sorry, there was an error. Please try again.';  // Fallback message
+    console.error('Error calling Grok API:', {
+      message: error.message,
+      code: error.response?.status,
+      details: error.response?.data,
+    });
+    return 'Lo siento, hubo un error. Por favor, intenta de nuevo.'; // Fallback message
   }
 }
 
-export default getGrokResponse
+export default getGrokResponse;

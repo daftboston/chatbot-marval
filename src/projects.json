@@ -1,0 +1,185 @@
+{
+  "companyName": "Marval Construction",
+  "projects": [
+    {
+      "name": "Caribbean Beach Resort",
+      "city": "Santa Marta",
+      "location": "Pozos Colorados, Santa Marta",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Luxury resort-style development"
+    },
+    {
+      "name": "Puerta Dorada La Bahía",
+      "city": "Barranquilla",
+      "location": "Veinte de Julio, Barranquilla",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Near the bay, family-oriented"
+    },
+    {
+      "name": "Ciudad La Salle Burdeos",
+      "city": "Bogotá",
+      "location": "Alameda, Bogotá",
+      "type": "Apartments",
+      "status": "Lanzamiento",
+      "price_from": 622701000,
+      "area_constructed": 60.02,
+      "area_private": 55,
+      "other_details": "VIS housing option available"
+    },
+    {
+      "name": "Citizen",
+      "city": "Bogotá",
+      "location": "Interindustrial, Bogotá",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": 713921000,
+      "area_constructed": 77.39,
+      "area_private": "Unknown",
+      "other_details": "Modern urban living"
+    },
+    {
+      "name": "El Country Masái",
+      "city": "Floridablanca",
+      "location": "Transversal El Bosque, Floridablanca",
+      "type": "Apartments",
+      "status": "Lanzamiento",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Near green areas"
+    },
+    {
+      "name": "Pradera del Hato",
+      "city": "Piedecuesta",
+      "location": "Río del Hato, Piedecuesta",
+      "type": "Houses",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Suburban houses with gardens"
+    },
+    {
+      "name": "Fiorino",
+      "city": "Cali",
+      "location": "Calle 4B con Carrera 37 esquina, Cali",
+      "type": "Apartments",
+      "status": "Entrega Inmediata",
+      "price_from": 515069000,
+      "area_constructed": 76.79,
+      "area_private": 67.73,
+      "other_details": "Immediate delivery, 2-3 bedrooms"
+    },
+    {
+      "name": "Reserva de La Sierra",
+      "city": "Bogotá",
+      "location": "Usaquen, Bogotá",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "High-end residential reserve"
+    },
+    {
+      "name": "La Scala",
+      "city": "Bogotá",
+      "location": "San José de Bavaria, Bogotá",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Elegant apartments in a quiet neighborhood"
+    },
+    {
+      "name": "Bellfort",
+      "city": "Floridablanca",
+      "location": "Calle 197, junto Universidad Santo Tomás, Floridablanca",
+      "type": "Apartments",
+      "status": "Lanzamiento VIS",
+      "price_from": 263976000,
+      "area_constructed": 41.41,
+      "area_private": 38.34,
+      "other_details": "VIS (affordable housing) launch"
+    },
+    {
+      "name": "Torres del Lago",
+      "city": "Cartagena",
+      "location": "Bocagrande, Cartagena",
+      "type": "Apartments",
+      "status": "Under Construction",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Beachfront towers"
+    },
+    {
+      "name": "Vila del Mar",
+      "city": "Barranquilla",
+      "location": "Northern zone, Barranquilla",
+      "type": "Houses and Apartments",
+      "status": "Available",
+      "price_from": 450000000,
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Mixed-use community"
+    },
+    {
+      "name": "Eden Park",
+      "city": "Cali",
+      "location": "Pance, Cali",
+      "type": "Houses",
+      "status": "Lanzamiento",
+      "price_from": "Unknown",
+      "area_constructed": 120,
+      "area_private": 100,
+      "other_details": "Eco-friendly houses"
+    },
+    {
+      "name": "Skyline Residences",
+      "city": "Bogotá",
+      "location": "Chapinero, Bogotá",
+      "type": "Apartments",
+      "status": "Entrega Inmediata",
+      "price_from": 800000000,
+      "area_constructed": 85,
+      "area_private": 75,
+      "other_details": "High-rise with views"
+    },
+    {
+      "name": "Río Claro",
+      "city": "Bucaramanga",
+      "location": "Near Río Claro, Bucaramanga",
+      "type": "Apartments",
+      "status": "Unknown",
+      "price_from": "Unknown",
+      "area_constructed": "Unknown",
+      "area_private": "Unknown",
+      "other_details": "Riverside development"
+    }
+  ],
+ "faqs": [
+    {
+      "question": "Cuales son sus plazos de pago ?",
+      "answer": "ofrecemos pagos flexibles hasta 20 años."
+    },
+    {
+      "question": "donde estan localizados sus proyectos",
+      "answer": "Nuestros proyectos estan principalmente en Bogotá, Cali, Cartagena y Barranquilla."
+    }
+  ],
+  "contact": {
+    "phone": "+1234567890",
+    "email": "contacto@marval.com",
+    "website": "https://www.marval.com"
+  }
+}
