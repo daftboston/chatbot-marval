@@ -1,6 +1,8 @@
 //importar credenciales
 import path from 'path'
 import { google } from 'googleapis'
+import { GoogleAuth } from 'google-auth-library';
+
 
 import config from '../config/env.js';
 
@@ -29,8 +31,8 @@ async function addRowToSheet (auth, spreadsheetId, values) {
 
 const appendToSheet = async (data) => {
     try {
-        const auth = new google.auth.GoogleAuth({
-           // keyFile: path.join(process.cwd(), 'credentials', 'credentials.json'),
+        const auth = new GoogleAuth({
+        //    keyFile: path.join(process.cwd(), 'credentials', 'credentials.json'),
             scopes: ['https://www.googleapis.com/auth/spreadsheets']
         })
 
