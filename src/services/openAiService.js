@@ -17,7 +17,7 @@ try {
   );
 } catch (error) {
   console.error('Error loading projects.json:', error);
-  companyData = { companyName: 'Marval Construction', projects: [], faqs: [], contact: {} };
+  companyData = { companyName: 'Marval Constructora', projects: [], faqs: [], contact: {} };
 }
 
 // Initialize conversation history with system prompt including company data
