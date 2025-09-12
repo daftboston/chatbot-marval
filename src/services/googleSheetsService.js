@@ -31,7 +31,16 @@ async function addRowToSheet (auth, spreadsheetId, values) {
 
 const appendToSheet = async (data) => {
     try {
+
+        const credentials = {
+            client_email: config.env.GOOGLE_CLIENT_EMAIL,  // Or config.GOOGLE_CLIENT_EMAIL if using a config file
+            private_key: config.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n')  // Handle escaped newlines if pasted incorrectly
+        };
+
+
+
         const auth = new GoogleAuth({
+            credentials: credentials,
         //    keyFile: path.join(process.cwd(), 'credentials', 'credentials.json'),
             scopes: ['https://www.googleapis.com/auth/spreadsheets']
         })
