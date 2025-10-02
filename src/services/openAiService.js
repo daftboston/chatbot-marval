@@ -47,7 +47,7 @@ async function getGrokResponse(message) {
     });
 
     const completion = await grok.chat.completions.create({
-      model: 'grok-4', // Or other models like 'grok-1.5' if available
+      model: 'grok-3', // Or other models like 'grok-1.5' if available
       messages: conversationHistory,
       temperature: 0.5, // Controls creativity
       max_tokens: 300, // Limit response length
