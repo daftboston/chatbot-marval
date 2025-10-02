@@ -250,14 +250,14 @@ async handleAssitantFlow(to, message) {
   let response
 
 
-
- const menuMessage = 'La respuesta fue de tu ayuda?'
+/* const menuMessage = 'La respuesta fue de tu ayuda?'
  const buttons = [
   {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
   {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
   {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
 
- ]
+ ]*/
+
 
 if (state.step === 'question') {
     try {
