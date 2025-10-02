@@ -44,7 +44,7 @@ class MessageHandler {
           }          
             else           
             {
-            // const response = 'Lo siento no entendi tu mensaje'
+            const response = 'Lo siento no entendí tu mensaje'
              await whatsappService.sendMessage(message.from, response,  message.id)
             }     
   
@@ -125,6 +125,8 @@ async handleMenuOption(to, option){
             break
         case 'option_4':           
             response = '¡que bien, me alegro mucho! , hay algo mas en que te pueda ayudar?'
+            delete this.assistantState[to]; // Exit assistant mode
+            await this.sendWelcomeMenu(to); // Optional: Return to main menu
             break
         case 'option_5':
              this.assistantState[to]= {step:'question', timestamp: Date.now()}
@@ -132,14 +134,21 @@ async handleMenuOption(to, option){
             break
         case 'option_6':
             response = 'Te invitamos a hablar con un asesor de la sucursal'
-
             await this.sendContact(to)
+            delete this.assistantState[to]; // Exit assistant mode
+
+           
             break
 
         default:
         response = 'Lo siento no entendi tu seleccion, por favor, elige una de las selecciones.'
           }    
-          await whatsappService.sendMessage(to, response)}
+      if (response) {
+           await whatsappService.sendMessage(to, response)
+      }
+       
+
+}
   
 async sendMedia(to, incomingMessage) {
     try {
@@ -247,16 +256,14 @@ async handleAppointmentFlow(to, message) {
 
 async handleAssistantFlow(to, message) {
   const state = this.assistantState[to]
-  let response
+  if (!state) {
+    console.error('Assistant state not found for:', to);
+    return; // Safeguard, though the incoming check should prevent this
+  }
+ let response = 'Lo siento, no pude procesar tu consulta en este momento.'; // Default fallback
 
 
-/* const menuMessage = 'La respuesta fue de tu ayuda?'
- const buttons = [
-  {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
-  {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
-  {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
 
- ]*/
 
 
 if (state.step === 'question') {
@@ -268,13 +275,26 @@ if (state.step === 'question') {
     }
   }
 
+   await whatsappService.sendMessage(to, response)
+
+  const menuMessage = 'La respuesta fue de tu ayuda?'
+ const buttons = [
+  {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
+  {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
+  {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
+
+ ]  
   
   delete this.assistantState[to]
-  await whatsappService.sendMessage(to, response)
+ 
 
   //si la interaccion detona una alarma para comunicarse con un asesor real
 
   await whatsappService.sendInteractiveButtons(to, menuMessage, buttons)
+
+
+  // Refresh timestamp to keep state alive
+  state.timestamp = Date.now();
 
 }
 
