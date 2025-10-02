@@ -269,7 +269,7 @@ if (state.step === 'question') {
   }
 
   
-  // delete this.assistantState[to]
+  delete this.assistantState[to]
   await whatsappService.sendMessage(to, response)
 
   //si la interaccion detona una alarma para comunicarse con un asesor real
