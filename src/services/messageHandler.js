@@ -40,7 +40,7 @@ class MessageHandler {
           } else if (this.appointmentState[message.from]) {
              await this.handleAppointmentFlow(message.from, incomingMessage);
           }  else if (this.assistantState[message.from]) {
-             await this.handleAssitantFlow(message.from, incomingMessage);
+             await this.handleAssistantFlow(message.from, incomingMessage);
           }          
             else           
             {
@@ -245,7 +245,7 @@ async handleAppointmentFlow(to, message) {
     await whatsappService.sendMessage(to, response);
   }
 
-async handleAssitantFlow(to, message) {
+async handleAssistantFlow(to, message) {
   const state = this.assistantState[to]
   let response
 
