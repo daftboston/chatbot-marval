@@ -129,8 +129,10 @@ async handleMenuOption(to, option){
             await this.sendWelcomeMenu(to); // Optional: Return to main menu
             break
         case 'option_5':
-             this.assistantState[to]= {step:'question', timestamp: Date.now()}
-            response = '¡Por supuesto! dime que mas quieres consultar?'
+           response = '¡Por supuesto! dime que mas quieres consultar?'
+           if (this.assistantState[to]) {
+           this.assistantState[to].timestamp = Date.now(); // Refresh timestamp
+          }
             break
         case 'option_6':
             response = 'Te invitamos a hablar con un asesor de la sucursal'
@@ -255,7 +257,9 @@ async handleAppointmentFlow(to, message) {
   }
 
 async handleAssistantFlow(to, message) {
+  
   const state = this.assistantState[to]
+  
   if (!state) {
     console.error('Assistant state not found for:', to);
     return; // Safeguard, though the incoming check should prevent this
@@ -275,9 +279,11 @@ if (state.step === 'question') {
     }
   }
 
-   await whatsappService.sendMessage(to, response)
 
-  this.assistantState[to]= {step:'question', timestamp: Date.now()}
+  // Send the Grok response 
+  await whatsappService.sendMessage(to, response);
+
+ 
 
   const menuMessage = 'La respuesta fue de tu ayuda?'
  const buttons = [
@@ -286,8 +292,13 @@ if (state.step === 'question') {
   {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
 
  ]  
+  // Send buttons for exit options, but keep state active for natural follow-ups
+    await whatsappService.sendInteractiveButtons(to, menuMessage, buttons)
+
+  // Refresh timestamp to keep state alive
+    state.timestamp = Date.now();
   
-  delete this.assistantState[to]
+
  
 
   //si la interaccion detona una alarma para comunicarse con un asesor real
