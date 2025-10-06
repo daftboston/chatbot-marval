@@ -277,6 +277,8 @@ if (state.step === 'question') {
 
    await whatsappService.sendMessage(to, response)
 
+  this.assistantState[to]= {step:'question', timestamp: Date.now()}
+
   const menuMessage = 'La respuesta fue de tu ayuda?'
  const buttons = [
   {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
