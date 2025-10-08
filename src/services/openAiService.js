@@ -13,7 +13,7 @@ const grok = new OpenAI({
 let companyData;
 try {
   companyData = JSON.parse(
-    await fs.readFile(path.join(process.cwd(), 'src/projects', 'projects.json'), 'utf8')
+    await fs.readFile(path.join(process.cwd(), 'projects', 'projects.json'), 'utf8')
   );
 } catch (error) {
   console.error('Error loading projects.json:', error);
@@ -47,7 +47,7 @@ async function getGrokResponse(message) {
     });
 
     const completion = await grok.chat.completions.create({
-      model: 'grok-4', // Or other models like 'grok-1.5' if available
+      model: 'grok-3', // Or other models like 'grok-1.5' if available
       messages: conversationHistory,
       temperature: 0.5, // Controls creativity
       max_tokens: 300, // Limit response length
@@ -63,10 +63,10 @@ async function getGrokResponse(message) {
     });
 
     // Limit conversation history to prevent excessive token usage
-    if (conversationHistory.length > 5) {
+    if (conversationHistory.length > 4 {
       conversationHistory.splice(
         1, // Keep the system prompt
-        conversationHistory.length - 5 // Keep last 4 messages
+        conversationHistory.length - 4 // Keep last 4 messages
       );
     }
 

@@ -90,14 +90,14 @@ async sendWelcomeMenu(to){
                                      type: "reply",
                                      reply: {
                                      id: "option_2",
-                                     title: "Consultar"
+                                     title: "Consultar con Marbot"
                                        }
                                  },
                                  {
                                      type: "reply",
                                      reply: {
                                      id: "option_3",
-                                     title: "Ubicacion"
+                                     title: "Ubicacion Oficinas Marval"
                                        }                   
                                 
                                  }
@@ -250,26 +250,42 @@ async handleAssitantFlow(to, message) {
   let response
 
 
-
+/*
  const menuMessage = 'La respuesta fue de tu ayuda?'
  const buttons = [
   {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
   {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
   {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
-
  ]
+ */
+
+
 
 if (state.step === 'question') {
     try {
-      response = await getGrokResponse(message);
+      const grokResult = await getGrokResponse(message);
+
+      if(typeof grokResult === 'object' && grokResult.type === 'tool_call') {
+        if(grokResult.name === 'start_appointment'){
+          //Trigger the appointment flow
+          this.appointmentState[to] = {step: 'name', timestamp: Date.now()}
+          response = '¡Excelente! Detecté que estás interesado en uno de nuestros proyectos. Para agendar una cita, por favor ingresa tu nombre:'
+        console.log(grokResult.arguments.reason)
+        } else {
+           response = 'Lo siento, hubo un error al procesar tu pregunta. Por favor, intenta de nuevo.';
+        }
+      }else{
+        response = grokResult //regular text response
+      }
+      
     } catch (error) {
       console.error('Error in getGrokResponse:', error);
-      response = 'Lo siento, hubo un error al procesar tu pregunta. Por favor, intenta de nuevo.';
+      
     }
   }
 
   
-  delete this.assistandState[to]
+//  delete this.assistandState[to]
   await whatsappService.sendMessage(to, response)
 
   //si la interaccion detona una alarma para comunicarse con un asesor real
