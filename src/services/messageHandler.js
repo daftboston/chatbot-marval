@@ -40,11 +40,11 @@ class MessageHandler {
           } else if (this.appointmentState[message.from]) {
              await this.handleAppointmentFlow(message.from, incomingMessage);
           }  else if (this.assistantState[message.from]) {
-             await this.handleAssitantFlow(message.from, incomingMessage);
+             await this.handleAssistantFlow(message.from, incomingMessage);
           }          
             else           
             {
-             const response = 'Lo siento no entendi tu mensaje'
+            const response = 'Lo siento no entendí tu mensaje'
              await whatsappService.sendMessage(message.from, response,  message.id)
             }     
   
@@ -125,21 +125,32 @@ async handleMenuOption(to, option){
             break
         case 'option_4':           
             response = '¡que bien, me alegro mucho! , hay algo mas en que te pueda ayudar?'
+            delete this.assistantState[to]; // Exit assistant mode
+            await this.sendWelcomeMenu(to); // Optional: Return to main menu
             break
         case 'option_5':
-             this.assistantState[to]= {step:'question', timestamp: Date.now()}
-            response = '¡Por supuesto! dime que mas quieres consultar?'
+           response = '¡Por supuesto! dime que mas quieres consultar?'
+           if (this.assistantState[to]) {
+           this.assistantState[to].timestamp = Date.now(); // Refresh timestamp
+          }
             break
         case 'option_6':
             response = 'Te invitamos a hablar con un asesor de la sucursal'
-
             await this.sendContact(to)
+            delete this.assistantState[to]; // Exit assistant mode
+
+           
             break
 
         default:
         response = 'Lo siento no entendi tu seleccion, por favor, elige una de las selecciones.'
           }    
-          await whatsappService.sendMessage(to, response)}
+      if (response) {
+           await whatsappService.sendMessage(to, response)
+      }
+       
+
+}
   
 async sendMedia(to, incomingMessage) {
     try {
@@ -245,19 +256,17 @@ async handleAppointmentFlow(to, message) {
     await whatsappService.sendMessage(to, response);
   }
 
-async handleAssitantFlow(to, message) {
+async handleAssistantFlow(to, message) {
+  
   const state = this.assistantState[to]
-  let response
+  
+  if (!state) {
+    console.error('Assistant state not found for:', to);
+    return; // Safeguard, though the incoming check should prevent this
+  }
+ let response = 'Lo siento, no pude procesar tu consulta en este momento.'; // Default fallback
 
 
-/*
- const menuMessage = 'La respuesta fue de tu ayuda?'
- const buttons = [
-  {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
-  {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
-  {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
- ]
- */
 
 
 
@@ -284,13 +293,35 @@ if (state.step === 'question') {
     }
   }
 
+
+  // Send the Grok response 
+  await whatsappService.sendMessage(to, response);
+
+ 
+
+  const menuMessage = 'La respuesta fue de tu ayuda?'
+ const buttons = [
+  {type: 'reply', reply: {id: 'option_4', title: 'Si, Gracias'}},
+  {type: 'reply', reply: {id: 'option_5', title: 'Hacer otra pregunta'}},
+  {type: 'reply', reply: {id: 'option_6', title: 'Asesor Sucursal'}},
+
+ ]  
+  // Send buttons for exit options, but keep state active for natural follow-ups
+    await whatsappService.sendInteractiveButtons(to, menuMessage, buttons)
+
+  // Refresh timestamp to keep state alive
+    state.timestamp = Date.now();
   
-//  delete this.assistandState[to]
-  await whatsappService.sendMessage(to, response)
+
+ 
 
   //si la interaccion detona una alarma para comunicarse con un asesor real
 
   await whatsappService.sendInteractiveButtons(to, menuMessage, buttons)
+
+
+  // Refresh timestamp to keep state alive
+  state.timestamp = Date.now();
 
 }
 
