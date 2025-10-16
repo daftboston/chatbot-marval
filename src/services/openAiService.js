@@ -12,7 +12,7 @@ const grok = new OpenAI({
 let companyData;
 try {
   companyData = JSON.parse(
-    await fs.readFile(path.join(process.cwd(), 'projects', 'projects.json'), 'utf8')
+    await fs.readFile(path.join(process.cwd(), 'src','projects', 'projects.json'), 'utf8')
   );
 } catch (error) {
   console.error('Error loading projects.json:', error);
