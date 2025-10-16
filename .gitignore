@@ -1,3 +1,5 @@
 node_modules/
 .env
-credentials/credentials.json
+src/googleCredentials/credentials.json
+credentials.json
+googleCredentials/credentials.json
