@@ -138,7 +138,7 @@ class MessageHandler {
     }
   }
 
-  async sendMedia(to, type) {
+  /* async sendMedia(to, type) {
     try {
       let mediaUrl, caption;
 
@@ -171,7 +171,7 @@ class MessageHandler {
       });
       await whatsappService.sendMessage(to, 'Lo siento, hubo un error al enviar el medio solicitado.');
     }
-  }
+  } */
 
  
 
