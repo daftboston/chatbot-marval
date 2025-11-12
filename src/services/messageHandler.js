@@ -47,7 +47,8 @@ class MessageHandler {
 
       if (this.isGreeting(incomingMessage)) {
         await this.sendWelcomeMessage(message.from, message.id, senderInfo);
-        await this.sendWelcomeMenu(message.from);
+        await this.handleAppointmentFlow(message.from, incomingMessage)
+       //  await this.sendWelcomeMenu(message.from);
       } else if (['audio', 'video', 'image', 'document'].includes(message.type)) {
         await this.sendMedia(message.from, message.type);
       } else if (this.appointmentState[message.from]) {
