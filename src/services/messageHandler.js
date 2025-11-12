@@ -281,7 +281,7 @@ completeAppointment(to) {
               { type: 'reply', reply: { id: 'option_5', title: 'Hacer otra pregunta' } },
              
             ];
-            await whatsappService.sendInteractiveButtons(to, menuMessage, buttons);
+           // await whatsappService.sendInteractiveButtons(to, menuMessage, buttons);
             return;
           }
         }
