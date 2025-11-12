@@ -46,7 +46,7 @@ class MessageHandler {
       const incomingMessage = message.text.body.toLowerCase().trim();
 
       if (this.isGreeting(incomingMessage)) {
-        await this.sendWelcomeMessage(message.from, message.id, senderInfo);
+      //  await this.sendWelcomeMessage(message.from, message.id, senderInfo);
         await this.handleAssistantFlow(message.from, incomingMessage);       
        //  await this.sendWelcomeMenu(message.from);
       } else if (['audio', 'video', 'image', 'document'].includes(message.type)) {
