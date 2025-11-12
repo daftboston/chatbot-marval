@@ -78,7 +78,7 @@ class MessageHandler {
   async sendWelcomeMessage(to, messageId, senderInfo) {
     const name = this.getSenderName(senderInfo);
     const onlyName = name.split(' ')[0];
-    const welcomeMessage = `Bienvenido ${onlyName}, soy Marbot. ¿En qué puedo ayudarte hoy?`;
+    const welcomeMessage = ` ${onlyName} es un gusto atenderte desde Constructora Marval, Marbot sera tu asistente,;
     await whatsappService.sendMessage(to, welcomeMessage, messageId);
   }
 
