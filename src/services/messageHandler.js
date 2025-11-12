@@ -82,96 +82,8 @@ class MessageHandler {
     await whatsappService.sendMessage(to, welcomeMessage, messageId);
   }
 
-  async sendWelcomeMenu(to) {
-    const menuMessage = 'Elige una opción';
-    const buttons = [
-      {
-        type: 'reply',
-        reply: {
-          id: 'option_2',
-          title: 'Consultar',
-        },
-      },
-      {
-        type: 'reply',
-        reply: {
-          id: 'option_3',
-          title: 'Ubicación',
-        },
-      },
-    ];
-    await whatsappService.sendInteractiveButtons(to, menuMessage, buttons);
-  }
-
-  async handleMenuOption(to, option) {
-    let response;
-    switch (option) {
-      case 'option_2':
-        this.assistantState[to] = { step: 'question', timestamp: Date.now() };
-        response = 'Hola, soy Marbot, ¿en qué te puedo ayudar?';
-        break;
-      case 'option_3':
-        response = '¡Te esperamos en nuestra sucursal!';
-        await this.sendLocation(to);
-        break;
-      case 'option_4':
-        response = '¡Qué bien, me alegro mucho! ¿Hay algo más en que te pueda ayudar?';
-        delete this.assistantState[to];
-        await this.sendWelcomeMenu(to);
-        break;
-      case 'option_5':
-        response = '¡Por supuesto! Dime, ¿qué más quieres consultar?';
-        if (this.assistantState[to]) {
-          this.assistantState[to].timestamp = Date.now();
-        }
-        break;
-      case 'option_6':
-        response = 'Te invitamos a hablar con un asesor de la sucursal';
-        await this.sendContact(to);
-        delete this.assistantState[to];
-        break;
-      default:
-        response = 'Lo siento, no entendí tu selección. Por favor, elige una de las opciones.';
-    }
-    if (response) {
-      await whatsappService.sendMessage(to, response);
-    }
-  }
-
-  /* async sendMedia(to, type) {
-    try {
-      let mediaUrl, caption;
-
-      switch (type) {
-        case 'audio':
-          mediaUrl = 'https://s3.amazonaws.com/gndx.dev/medpet-audio.aac';
-          caption = 'Bienvenida';
-          break;
-        case 'video':
-          mediaUrl = 'https://s3.amazonaws.com/gndx.dev/medpet-video.mp4';
-          caption = '¡Esto es un video!';
-          break;
-        case 'image':
-          mediaUrl = 'https://s3.amazonaws.com/gndx.dev/medpet-image.jpg';
-          caption = '¡Esto es una imagen!';
-          break;
-        case 'document':
-          mediaUrl = 'https://s3.amazonaws.com/gndx.dev/medpet-document.pdf';
-          caption = '¡Esto es un documento!';
-          break;
-        default:
-          throw new Error(`Tipo de media no soportado: ${type}`);
-      }
-
-      await whatsappService.sendMediaMessage(to, type, mediaUrl, caption);
-    } catch (error) {
-      console.error('Error sending media:', {
-        message: error.message,
-        stack: error.stack,
-      });
-      await whatsappService.sendMessage(to, 'Lo siento, hubo un error al enviar el medio solicitado.');
-    }
-  } */
+  
+ 
 
  
 
@@ -296,63 +208,9 @@ completeAppointment(to) {
     state.timestamp = Date.now();
   }
 
-  async sendContact(to) {
-    const contact = {
-      addresses: [
-        {
-          street: '123 Calle de las Mascotas',
-          city: 'Ciudad',
-          state: 'Estado',
-          zip: '12345',
-          country: 'País',
-          country_code: 'PA',
-          type: 'WORK',
-        },
-      ],
-      emails: [
-        {
-          email: 'contacto@medpet.com',
-          type: 'WORK',
-        },
-      ],
-      name: {
-        formatted_name: 'Asesor Marval',
-        first_name: 'MedPet',
-        last_name: 'Contacto',
-        middle_name: '',
-        suffix: '',
-        prefix: '',
-      },
-      org: {
-        company: 'Marval',
-        department: 'Atención al Cliente',
-        title: 'Representante',
-      },
-      phones: [
-        {
-          phone: '+1234567890',
-          wa_id: '1234567890',
-          type: 'WORK',
-        },
-      ],
-      urls: [
-        {
-          url: 'https://www.marval.com',
-          type: 'WORK',
-        },
-      ],
-    };
-    await whatsappService.sendContactMessage(to, contact);
-  }
+ 
 
-  async sendLocation(to) {
-    const latitude = 4.65898;
-    const longitude = -74.10811;
-    const name = 'Marval Bogotá';
-    const address = 'Cra. 69b Calle 26';
 
-    await whatsappService.sendLocationMessage(to, latitude, longitude, name, address);
-  }
 }
 
 export default new MessageHandler();
